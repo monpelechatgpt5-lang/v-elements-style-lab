@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>V Elements I — Проверка цветов</title>
+<style>
+:root{--bg:#111827;--menu:#1f2937;--menuText:#f9fafb;--info:#263241;--infoText:#e5eef7;--active:#16a34a}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--infoText);font-family:Arial,sans-serif;padding:18px;transition:.2s}.app{max-width:560px;margin:auto}.title{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}.logo{display:flex;gap:10px;align-items:center;font-weight:800}.v{width:36px;height:36px;border-radius:12px;background:var(--active);display:grid;place-items:center;color:#fff}.panel{background:var(--info);border-radius:18px;padding:16px;margin-bottom:14px}.menu button{display:block;width:100%;background:var(--menu);color:var(--menuText);border:0;border-radius:14px;padding:16px;text-align:left;font-size:17px;font-weight:700;margin:9px 0}.menu button:first-child{background:var(--active);color:#fff}.preview{height:180px;border:1px solid #ffffff22;border-radius:18px;position:relative;overflow:hidden;background:var(--bg)}.wheel{width:70px;height:70px;border:10px solid #bcc8d5;border-radius:50%;position:absolute;bottom:32px}.w1{left:45px}.w2{left:145px}.w3{right:45px}.seat{width:44px;height:100px;border-radius:50% 50% 20% 20%;background:var(--active);position:absolute;left:50%;top:34px;transform:rotate(25deg)}.control{display:grid;grid-template-columns:1fr 55px 90px;gap:8px;align-items:center;padding:12px 0;border-top:1px solid #ffffff22}.control:first-child{border-top:0}.control input[type=color]{width:54px;height:36px;border:0;background:transparent}.control input[type=text]{width:90px;padding:9px;border-radius:10px;border:1px solid #ffffff33;background:var(--bg);color:var(--infoText)}.preset{width:100%;border:0;border-radius:12px;padding:14px;margin-top:9px;background:var(--active);color:#fff;font-weight:800;font-size:15px}.small{background:#475569}.note{font-size:12px;color:#cbd5e1;line-height:1.4}
+</style>
+<script>
+function setColor(variable,value){ if(/^#[0-9a-fA-F]{6}$/.test(value)){document.documentElement.style.setProperty(variable,value); document.querySelectorAll('[data-var="'+variable+'"]').forEach(x=>x.value=value); localStorage.setItem('ve-style-test',JSON.stringify(readTheme()));}}
+function readTheme(){let r={};['--bg','--menu','--menuText','--infoText','--info','--active'].forEach(k=>r[k]=getComputedStyle(document.documentElement).getPropertyValue(k).trim());return r}
+function preset(kind){let p={dark:{'--bg':'#111827','--menu':'#1f2937','--menuText':'#f9fafb','--info':'#263241','--infoText':'#e5eef7','--active':'#16a34a'},light:{'--bg':'#f1f5f9','--menu':'#ffffff','--menuText':'#1e293b','--info':'#ffffff','--infoText':'#1e293b','--active':'#3566d6'},violet:{'--bg':'#24113d','--menu':'#3b1d65','--menuText':'#fff7ff','--info':'#321a55','--infoText':'#fff7ff','--active':'#8b4cf1'}}[kind];Object.entries(p).forEach(([k,v])=>setColor(k,v));}
+window.addEventListener('DOMContentLoaded',()=>{try{let s=JSON.parse(localStorage.getItem('ve-style-test'));if(s)Object.entries(s).forEach(([k,v])=>setColor(k,v));}catch(e){}document.querySelectorAll('[data-var]').forEach(el=>{let k=el.dataset.var;el.value=getComputedStyle(document.documentElement).getPropertyValue(k).trim();el.addEventListener('input',()=>setColor(k,el.value));el.addEventListener('change',()=>setColor(k,el.value));});});
+</script>
+</head>
+<body>
+<div class="app">
+<div class="title"><div class="logo"><span class="v">V</span><span>V ELEMENTS I<br><small>Проверка стиля v1</small></span></div></div>
+<div class="panel"><b>Проверьте сначала:</b><br><span class="note">Нажмите кнопку «Фиолетовый тест». Весь экран должен стать фиолетовым.</span><button class="preset" onclick="preset('violet')">Фиолетовый тест</button><button class="preset small" onclick="preset('light')">Светлый тест</button></div>
+<div class="preview"><div class="seat"></div><div class="wheel w1"></div><div class="wheel w2"></div><div class="wheel w3"></div></div>
+<div class="panel menu"><button>⌂　Главная</button><button>◉　Общая компоновка</button><button>◌　Колёса и шины</button></div>
+<div class="panel"><b>Окно информации</b><p>Сиденье — THOR Trike XL</p><p>Габариты — 807 × 500 × 630 мм</p></div>
+<div class="panel">
+<div class="control"><label>1. Фон приложения</label><input type="color" data-var="--bg"><input type="text" data-var="--bg"></div>
+<div class="control"><label>2. Цвет кнопок меню</label><input type="color" data-var="--menu"><input type="text" data-var="--menu"></div>
+<div class="control"><label>3. Текст кнопок меню</label><input type="color" data-var="--menuText"><input type="text" data-var="--menuText"></div>
+<div class="control"><label>4. Текст в информации</label><input type="color" data-var="--infoText"><input type="text" data-var="--infoText"></div>
+<div class="control"><label>5. Фон информации</label><input type="color" data-var="--info"><input type="text" data-var="--info"></div>
+</div>
+</div>
+</body>
+</html>
